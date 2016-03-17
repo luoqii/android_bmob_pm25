@@ -96,7 +96,7 @@ public class MainActivity extends ActionBarActivity {
             pm.value_2_5 = r.nextInt(100);
             pm.value_5 = r.nextInt(100);
             pm.value_10 = r.nextInt(100);
-            pm.recordedTime = System.currentTimeMillis();
+            pm.recordedTime = Rz
 
             pm.save(getActivity(), new SaveListener() {
                 @Override
