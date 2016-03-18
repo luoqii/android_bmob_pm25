@@ -135,7 +135,10 @@ public class MainActivity extends ActionBarActivity {
 //            lineData.getDataSets().add(set03);
             lineData.addDataSet(set03);
 
+            // TODO this will crach app, why???
+//            lineData.notifyDataChanged();
             mChart.notifyDataSetChanged();
+
             mChart.invalidate();
         }
 
