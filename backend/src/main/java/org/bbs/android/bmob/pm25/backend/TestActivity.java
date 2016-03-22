@@ -1,4 +1,4 @@
-package org.bbs.android.bmob.pm25;
+package org.bbs.android.bmob.pm25.backend;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,11 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.bbs.android.pm25.library.PMS50003;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -113,21 +114,22 @@ public class TestActivity extends ActionBarActivity {
         PMS50003 randomPm(){
             PMS50003 pm = new PMS50003();
             Random r = new Random();
-            pm.pm1_0_CF1 = r.nextInt(100);
-            pm.pm2_5_CF1 = r.nextInt(100);
-            pm.pm10_CF1 = r.nextInt(100);
+            pm.pm1_0_CF1 = (r.nextInt(100));
+            pm.pm2_5_CF1 = (r.nextInt(100));
+            pm.pm10_CF1 = (r.nextInt(100));
 
-            pm.pm1_0 = r.nextInt(100);
-            pm.pm2_5 = r.nextInt(100);
-            pm.pm10 = r.nextInt(100);
+            pm.pm1_0 = (r.nextInt(100));
+            pm.pm2_5 = (r.nextInt(100));
+            pm.pm10 = (r.nextInt(100));
 
-            pm.value_0_3 = r.nextInt(100);
-            pm.value_0_5 = r.nextInt(100);
-            pm.value_1 = r.nextInt(100);
-            pm.value_2_5 = r.nextInt(100);
-            pm.value_5 = r.nextInt(100);
-            pm.value_10 = r.nextInt(100);
-            pm.recordedTime = System.currentTimeMillis();
+            pm.value_0_3 = (r.nextInt(100));
+            pm.value_0_5 = (r.nextInt(100));
+            pm.value_1 = (r.nextInt(100));
+            pm.value_2_5 = (r.nextInt(100));
+            pm.value_5 = (r.nextInt(100));
+            pm.value_10 = (r.nextInt(100));
+
+            pm.recordedTime = (System.currentTimeMillis());
 
             return pm;
         }

@@ -1,3 +1,3 @@
-include ':app', ':MPChartLib'
+include ':app', ':MPChartLib', ':backend', ':library'
 
 include ':MPChartLib'

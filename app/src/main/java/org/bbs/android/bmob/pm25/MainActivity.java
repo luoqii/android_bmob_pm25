@@ -2,16 +2,20 @@ package org.bbs.android.bmob.pm25;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -19,18 +23,20 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import org.bbs.android.pm25.library.PMS50003;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -44,7 +50,8 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+//                    .add(R.id.container, new LineCharFragment())
+                    .add(R.id.container, new Pm25Fragment())
                     .commit();
         }
     }
@@ -72,10 +79,9 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-   /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
+    public static class LineCharFragment extends Fragment
+//            implements View.OnClickListener
+    {
 
         public static final String PM_2_5 = "pm 2.5";
         public static final String PM_1_0 = "pm 1.0";
@@ -84,7 +90,7 @@ public class MainActivity extends ActionBarActivity {
         private LineChart mChart;
         List<PMS50003> mData;
 
-        public PlaceholderFragment() {
+        public LineCharFragment() {
             setHasOptionsMenu(true);
             mData = new ArrayList<>();
         }
@@ -206,20 +212,106 @@ public class MainActivity extends ActionBarActivity {
             });
         }
 
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.save_batch:
-//                    saveBatch();
-                    break;
-                case R.id.save:
-//                    save();
-                    break;
-            }
-        }
+//        @Override
+//        public void onClick(View v) {
+//            switch (v.getId()) {
+//                case R.id.save_batch:
+////                    saveBatch();
+//                    break;
+//                case R.id.save:
+////                    save();
+//                    break;
+//            }
+//        }
 
         void toast(String message) {
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static class Pm25Fragment extends  Fragment {
+        private static final int DELAY = 1 * 1000;
+
+        @Bind(R.id.pm25) TextView mPm25V;
+        @Bind(R.id.update_time) TextView mUpdateTimeV;
+        @Bind(R.id.pm_value_0_3) TextView mPm03ValueV;
+        private Handler mHandler;
+
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mHandler = new Handler(){
+                @Override
+                public void handleMessage(Message msg) {
+                    super.handleMessage(msg);
+                    update();
+                }
+            };
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.fragment_pm25, null);
+            ButterKnife.bind(this,v);
+            return v;
+        }
+
+        @Override
+        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+        }
+
+
+        @Override
+        public void onResume() {
+            super.onResume();
+
+            mHandler.sendEmptyMessage(0);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+
+            mHandler.removeMessages(0);
+        }
+
+        void update(){
+            BmobQuery<PMS50003> query = new BmobQuery<PMS50003>();
+            query.setLimit(1);
+            query.order("-recordedTime");
+            query.findObjects(getContext(), new FindListener<PMS50003>() {
+                @Override
+                public void onSuccess(List<PMS50003> list) {
+                    PMS50003 pm = list.get(0);
+                    if (null != pm) {
+                        mPm25V.setText(pm.pm2_5 + "");
+                        CharSequence text =
+                                DateUtils.getRelativeTimeSpanString(pm.recordedTime,
+                                            System.currentTimeMillis(),
+                                            0,
+                                            DateUtils.FORMAT_NUMERIC_DATE);
+                        mUpdateTimeV.setText(text);
+
+                        mPm03ValueV.setText(pm.value_0_3 + "");
+                    }
+                }
+
+                @Override
+                public void onError(int i, String s) {
+
+                }
+            });
+
+            mHandler.sendEmptyMessageDelayed(0, DELAY);
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            ButterKnife.unbind(this);
         }
     }
 }

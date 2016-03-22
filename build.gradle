@@ -12,6 +12,9 @@ buildscript {
 
         //https://github.com/PhilJay/MPAndroidChart/blob/master/build.gradle
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
+
+        //https://realm.io/docs/java/latest/#installation
+        classpath "io.realm:realm-gradle-plugin:0.88.2"
     }
 }
 
