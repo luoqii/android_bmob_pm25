@@ -100,10 +100,10 @@ public class PmCollectorTest extends TestCase {
     }
 
     String bufferString(ByteBuffer buffer) {
-        int postion = buffer.position();
+        int position = buffer.position();
         String str = "buffer:";
-        for (int i = 0; i < postion; i++) {
-            str += " " + buffer.get(i);
+        for (int i = 0; i < position; i++) {
+            str += " " + Integer.toString(buffer.get(i), 16) + "[" + buffer.get(i) + "]";
         }
 
         return str;
