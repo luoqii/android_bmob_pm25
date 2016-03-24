@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * Created by bysong on 16-3-22.
  */
-public class PmCollectorTest extends TestCase {
+public class PmCollectorUnitTest extends TestCase {
 
     private static final String TAG = PmCollector.class.getSimpleName();
     public static final int RUN_COUNT = 1000000;

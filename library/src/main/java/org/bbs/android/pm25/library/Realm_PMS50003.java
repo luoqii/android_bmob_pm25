@@ -36,13 +36,14 @@ public class Realm_PMS50003 extends RealmObject {
 
     public static Realm_PMS50003 fromPm(PMS50003 pm){
         Realm_PMS50003 p = new Realm_PMS50003();
-        p.setPm1_0(pm.pm1_0);
-        p.setPm2_5(pm.pm2_5);
-        p.setPm10(pm.pm10);
 
         p.setPm1_0_CF1(pm.pm1_0_CF1);
         p.setPm2_5_CF1(pm.pm2_5_CF1);
-        p.setPm1_0_CF1(pm.pm10_CF1);
+        p.setPm10_CF1(pm.pm10_CF1);
+
+        p.setPm1_0(pm.pm1_0);
+        p.setPm2_5(pm.pm2_5);
+        p.setPm10(pm.pm10);
 
         p.setValue_0_3(pm.value_0_3);
         p.setValue_0_5(pm.value_0_5);
@@ -50,15 +51,44 @@ public class Realm_PMS50003 extends RealmObject {
         p.setValue_2_5(pm.value_2_5);
         p.setValue_5(pm.value_5);
         p.setValue_10(pm.value_10);
+
+        p.setRecordedTime(pm.recordedTime);
+
         return p;
+    }
+
+    //@Override
+    public boolean saveAs(PMS50003 other) {
+        if (other == null) {
+            return false;
+        }
+
+        return (this.pm1_0 == other.pm1_0)
+                && (this.pm2_5 == other.pm2_5)
+                && (this.pm10 == other.pm10)
+
+                && (this.pm1_0_CF1 == other.pm1_0_CF1)
+                && (this.pm2_5_CF1 == other.pm2_5_CF1)
+                && (this.pm10_CF1 == other.pm10_CF1)
+
+                && (this.value_0_3 == other.value_0_3)
+                && (this.value_0_5 == other.value_0_5)
+                && (this.value_1 == other.value_1)
+                && (this.value_2_5 == other.value_2_5)
+                && (this.value_10 == other.value_10)
+
+                && (this.recordedTime == other.recordedTime)
+                ;
+//        return super.equals(o);
     }
 
     @Override
     public String toString() {
-        return "cf[" + getPm1_0_CF1() + "," + getPm2_5_CF1() + "," + getPm10_CF1() + "]"
-                + "[" + getPm1_0() + "," + getPm2_5() + "," + getPm10() + "]"
+        return "cf[" + getPm1_0_CF1() + "," + getPm2_5_CF1() + "," + getPm10_CF1() + "],"
+                + "[" + getPm1_0() + "," + getPm2_5() + "," + getPm10() + "],"
                 + "[" + getValue_0_3() + "," + getValue_0_5() + "," + getValue_1() + ","
-                + getValue_2_5() + "," + getValue_5() + "," + getValue_10() + "]"
+                + getValue_2_5() + "," + getValue_5() + "," + getValue_10() + "],"
+                + "[" + recordedTime + "]"
                 ;
     }
 
