@@ -135,7 +135,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         private void updateUi() {
-            if (null != mService) {
+            if (null != mService && getActivity() != null) {
                 mStatisticsV.setText(mService.getStatistics());
                 mStatusV.setText(mService.getStatus());
             }
@@ -165,6 +165,13 @@ public class MainActivity extends ActionBarActivity {
             super.onStart();
             Intent service = new Intent(getActivity(), UploadService.class);
             getActivity().bindService(service, mConnection, Context.BIND_AUTO_CREATE);
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            mUiHandler.removeMessages(0);
+            mUiHandler.sendEmptyMessageDelayed(0, DELAY);
         }
 
         @Override

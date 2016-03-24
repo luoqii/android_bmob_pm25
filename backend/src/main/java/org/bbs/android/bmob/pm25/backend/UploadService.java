@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import cn.bmob.v3.listener.SaveListener;
 
@@ -32,14 +33,19 @@ public class UploadService extends Service {
     private static final int ONGOING_NOTIFICATION_ID = R.layout.activity_main;
     private final IBinder mLocalBinder = new LocalBinder();
     private BtThread mThread;
-    private int mTotalAckPm;
-    private int mTotalPm;
+
+
+    // FIXME 5
+    private AtomicInteger mTotalAckPm;
+    private AtomicInteger mTotalPm;
 
     private String mStatus = "init ...";
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mTotalAckPm = new AtomicInteger();
+        mTotalPm = new AtomicInteger();
     }
 
     @Nullable
@@ -97,7 +103,7 @@ public class UploadService extends Service {
     }
 
     public String getStatistics() {
-        return mTotalAckPm + "/" + mTotalPm;
+        return mTotalAckPm.get() + "/" + mTotalPm.get();
     }
 
     public String getStatus() {
@@ -131,16 +137,17 @@ public class UploadService extends Service {
             mCollector.setCallback(new PmCollector.PmCallback() {
                 @Override
                 public void onPmAvailable(PMS50003 pm) {
-                    mTotalPm++;
+                    mTotalPm.set(mTotalPm.get());
                     pm.save(getApplicationContext(), new SaveListener() {
                         @Override
                         public void onSuccess() {
-                            mTotalAckPm++;
+                            Log.d(TAG, "onSuccess");
+                            mTotalAckPm.set(mTotalAckPm.get());
                         }
 
                         @Override
                         public void onFailure(int i, String s) {
-
+                            Log.w(TAG, "onFailure. i:" + i + " s:" + s);
                         }
                     });
                 }
@@ -173,7 +180,11 @@ public class UploadService extends Service {
                 int count = -1;
                 byte[] buffer = new byte[1024];
                 while (!mShouldQuit && (count = mIn.read(buffer)) != -1) {
-                    mCollector.onDataRcvd(ByteBuffer.wrap(buffer, 0, count).array());
+                    // FIXME do NOT work
+//                    mCollector.onDataRcvd(ByteBuffer.wrap(buffer, 0, count).array());
+                    for (int i = 0 ; i < count ; i++){
+                        mCollector.onDataRcvd(buffer[i]);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
