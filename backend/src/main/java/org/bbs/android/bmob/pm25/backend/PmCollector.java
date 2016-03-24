@@ -9,7 +9,7 @@ import org.bbs.android.pm25.library.PMS50003;
  */
 public class PmCollector {
     private static final String TAG = PmCollector.class.getSimpleName();
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static PmCollector sInstance;
 

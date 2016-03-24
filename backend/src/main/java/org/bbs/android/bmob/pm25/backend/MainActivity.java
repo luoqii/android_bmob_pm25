@@ -170,6 +170,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void onResume() {
             super.onResume();
+            updateUi();
             mUiHandler.removeMessages(0);
             mUiHandler.sendEmptyMessageDelayed(0, DELAY);
         }
