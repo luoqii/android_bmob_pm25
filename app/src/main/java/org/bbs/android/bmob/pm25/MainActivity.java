@@ -32,6 +32,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 
@@ -165,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
 
         void initData() {
             BmobQuery<PMS50003> query = new BmobQuery<PMS50003>();
-            query.setLimit(500);
+            query.setLimit(5000);
+            query.order("-recordedTime");
 
             query.findObjects(getActivity(), new FindListener<PMS50003>() {
                 @Override
@@ -289,9 +291,9 @@ public class MainActivity extends AppCompatActivity {
                         mPm25V.setText(pm.pm2_5 + "");
                         CharSequence text =
                                 DateUtils.getRelativeTimeSpanString(pm.recordedTime,
-                                            System.currentTimeMillis(),
-                                            0,
-                                            DateUtils.FORMAT_NUMERIC_DATE);
+                                        System.currentTimeMillis(),
+                                        0,
+                                        DateUtils.FORMAT_NUMERIC_DATE);
                         mUpdateTimeV.setText(text);
 
                         mPm03ValueV.setText(pm.value_0_3 + "");
@@ -311,6 +313,14 @@ public class MainActivity extends AppCompatActivity {
         public void onDestroy() {
             super.onDestroy();
             ButterKnife.unbind(this);
+        }
+
+        @OnClick(R.id.pm25)
+        void showPm25ByLineChart() {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new LineCharFragment())
+                    .addToBackStack("chart")
+                    .commit();
         }
     }
 }

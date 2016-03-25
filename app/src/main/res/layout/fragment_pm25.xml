@@ -16,6 +16,7 @@
             android:text="pm 2.5 value"
             android:id="@+id/pm25"
             android:textSize="80sp"
+            android:focusable="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
