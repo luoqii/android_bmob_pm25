@@ -56,6 +56,29 @@ public class TestActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static PMS50003 randomPm() {
+        PMS50003 pm = new PMS50003();
+        Random r = new Random();
+        pm.pm1_0_CF1 = (r.nextInt(100));
+        pm.pm2_5_CF1 = (r.nextInt(100));
+        pm.pm10_CF1 = (r.nextInt(100));
+
+        pm.pm1_0 = (r.nextInt(100));
+        pm.pm2_5 = (r.nextInt(100));
+        pm.pm10 = (r.nextInt(100));
+
+        pm.value_0_3 = (r.nextInt(100));
+        pm.value_0_5 = (r.nextInt(100));
+        pm.value_1 = (r.nextInt(100));
+        pm.value_2_5 = (r.nextInt(100));
+        pm.value_5 = (r.nextInt(100));
+        pm.value_10 = (r.nextInt(100));
+
+        pm.recordedTime = (System.currentTimeMillis());
+
+        return pm;
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -109,29 +132,6 @@ public class TestActivity extends ActionBarActivity {
             pms.add(randomPm());
 
             new BmobObject().insertBatch(getActivity(), pms, new ToastSaveListener());
-        }
-
-        PMS50003 randomPm(){
-            PMS50003 pm = new PMS50003();
-            Random r = new Random();
-            pm.pm1_0_CF1 = (r.nextInt(100));
-            pm.pm2_5_CF1 = (r.nextInt(100));
-            pm.pm10_CF1 = (r.nextInt(100));
-
-            pm.pm1_0 = (r.nextInt(100));
-            pm.pm2_5 = (r.nextInt(100));
-            pm.pm10 = (r.nextInt(100));
-
-            pm.value_0_3 = (r.nextInt(100));
-            pm.value_0_5 = (r.nextInt(100));
-            pm.value_1 = (r.nextInt(100));
-            pm.value_2_5 = (r.nextInt(100));
-            pm.value_5 = (r.nextInt(100));
-            pm.value_10 = (r.nextInt(100));
-
-            pm.recordedTime = (System.currentTimeMillis());
-
-            return pm;
         }
 
         private class ToastSaveListener extends SaveListener {

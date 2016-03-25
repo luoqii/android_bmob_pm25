@@ -37,9 +37,11 @@ dependencies {
     compile 'com.squareup.okio:okio:1.4.0'
     //bmob-sms ：Bmob单独为短信服务提供的包
     //    compile 'cn.bmob.android:bmob-sms:1.0.1'
+
     //https://github.com/luoqii/MPAndroidChart
-    //    compile 'com.github.PhilJay:MPAndroidChart:v2.2.2'
-    compile project(':MPChartLib')
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.3'
+//    compile project(':MPChartLib')
+
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile project(':library')
