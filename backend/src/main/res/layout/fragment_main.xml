@@ -43,7 +43,7 @@
         android:id="@+id/status"
         tools:text="status"
         android:gravity="center"
-        android:textSize="80sp"
+        android:textSize="40sp"
         android:text="Nan" />
 
     <TextView

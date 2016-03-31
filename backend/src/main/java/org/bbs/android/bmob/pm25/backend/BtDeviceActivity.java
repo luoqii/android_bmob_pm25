@@ -19,11 +19,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class BtDeviceActivity extends AppCompatActivity {
+public class BtDeviceActivity extends AppBaseActivity {
     private static final  String TAG = MainActivity.class.getSimpleName();
 
     public static final String EXTRA_MAC = "extra_mac_address";

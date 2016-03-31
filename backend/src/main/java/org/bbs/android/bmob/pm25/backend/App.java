@@ -5,12 +5,14 @@ import android.content.SharedPreferences;
 
 import cn.bmob.v3.Bmob;
 
+import static org.bbs.android.bmob.pm25.backend.BR.startService4LastTime;
+
 /**
  * Created by bysong on 16-3-23.
  */
 public class App extends Application {
     public static final String PREF_AUTO_START_AT_BOOT = "auto_start_at_boot";
-    public static final String PREF_MAC = "mac";
+    public static final String KEY_MAC = "mac";
     public static App sInstance;
 
     @Override
@@ -23,6 +25,8 @@ public class App extends Application {
         Bmob.initialize(this, "5543fd2c5165876ee945a6e2dae71718");
 
         sInstance = this;
+
+//        startService4LastTime(this);
     }
 
     public SharedPreferences getPref(){

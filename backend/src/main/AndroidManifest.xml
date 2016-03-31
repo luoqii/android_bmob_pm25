@@ -18,8 +18,12 @@
         android:supportsRtl="true"
         android:name=".App"
         android:theme="@style/AppTheme">
+        <!-- bangbang.song -->
+        <meta-data android:value="56fd28f8e0f55aab8b00122d" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="umeng" android:name="UMENG_CHANNEL"/>
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

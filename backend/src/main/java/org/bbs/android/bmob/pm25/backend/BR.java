@@ -15,10 +15,14 @@ public class BR extends BroadcastReceiver {
         String action = intent.getAction();
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)
                 && App.sInstance.getPref().getBoolean(App.PREF_AUTO_START_AT_BOOT, false)) {
-            String mac = App.sInstance.getPref().getString(App.PREF_MAC, "");
-            if (!TextUtils.isEmpty(mac)) {
-                UploadService.start(context, mac);
-            }
+            startService4LastTime(context);
+        }
+    }
+
+    public static void startService4LastTime(Context context) {
+        String mac = App.sInstance.getPref().getString(App.KEY_MAC, "");
+        if (!TextUtils.isEmpty(mac)) {
+            UploadService.start(context, mac);
         }
     }
 }
