@@ -164,6 +164,8 @@ public class Uploader{
             mStatus = "thread end.";
 
             if (!mShouldQuit){
+
+                mStatus = "restart service.";
                 mUiHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
