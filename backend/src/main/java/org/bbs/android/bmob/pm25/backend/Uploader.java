@@ -162,6 +162,16 @@ public class Uploader{
             mStatus = "thread try get socket.";
             super.run();
             mStatus = "thread end.";
+
+            if (!mShouldQuit){
+                mUiHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "restart service.");
+                        startService(App.sInstance.getPref().getString(App.KEY_MAC, ""));
+                    }
+                }, 5 * 1000);
+            }
         }
 
         public void quit() {

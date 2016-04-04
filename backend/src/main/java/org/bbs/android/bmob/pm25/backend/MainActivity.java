@@ -195,6 +195,9 @@ public class MainActivity extends AppBaseActivity {
         }
 
         void doStartService(String mac) {
+            if (null == mService){
+                return;
+            }
             mService.startService(mac);
             mUiHandler.sendEmptyMessage(0);
         }
