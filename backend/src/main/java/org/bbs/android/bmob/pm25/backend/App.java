@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.SharedPreferences;
 
 import cn.bmob.v3.Bmob;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 import static org.bbs.android.bmob.pm25.backend.BR.startService4LastTime;
 
@@ -14,6 +16,7 @@ public class App extends Application {
     public static final String PREF_AUTO_START_AT_BOOT = "auto_start_at_boot";
     public static final String KEY_MAC = "mac";
     public static App sInstance;
+    public static RealmConfiguration sRealmConfig;
 
     @Override
     public void onCreate() {
@@ -25,8 +28,10 @@ public class App extends Application {
         Bmob.initialize(this, "5543fd2c5165876ee945a6e2dae71718");
 
         sInstance = this;
+        sRealmConfig = new RealmConfiguration.Builder(this).build();
 
 //        startService4LastTime(this);
+
     }
 
     public SharedPreferences getPref(){

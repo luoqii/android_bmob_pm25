@@ -7,17 +7,24 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
 import org.bbs.android.pm25.library.PMS50003;
+import org.bbs.android.pm25.library.Realm_PMS50003;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.listener.SaveListener;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by bysong on 16-3-23.
@@ -39,6 +46,7 @@ public class Uploader{
     private Handler mUiHandler;
 
     private String mStatus = "init ...";
+    private UploaderThreadByRealm mUploaderThread;
 
     public static Uploader getInstance(Application app){
         if (null == sInstance){
@@ -67,6 +75,7 @@ public class Uploader{
                         Log.d(TAG, "upload:" + mTotal + " success:" + mTotalAck + "\npm:" + pm);
                     }
                 });
+
                 pm.save(mApp, new SaveListener() {
                     @Override
                     public void onSuccess() {
@@ -86,6 +95,13 @@ public class Uploader{
                     public void onFailure(int i, String s) {
                         mStatus = "upload error";
                         Log.w(TAG, "onFailure. i:" + i + " s:" + s);
+
+                        Realm realm = Realm.getInstance(App.sRealmConfig);
+                        realm.beginTransaction();
+                        realm.copyToRealm(Realm_PMS50003.fromPm(pm));
+
+                        realm.commitTransaction();
+                        Log.w(TAG, "save by ream. pm:" + pm);
                     }
                 });
             }
@@ -115,6 +131,11 @@ public class Uploader{
 
             mStatus = "start thread.";
         }
+
+        if (mUploaderThread == null){
+            mUploaderThread = new UploaderThreadByRealm();
+            mUploaderThread.start();
+        }
     }
 
     public void stopSerivce() {
@@ -125,6 +146,10 @@ public class Uploader{
             mThread = null;
 
 //            stopForeground(true);
+        }
+
+        if (null != mUploaderThread){
+            mUploaderThread.quit();
         }
     }
 
@@ -141,6 +166,88 @@ public class Uploader{
         Uploader getService() {
             // Return this instance of LocalService so clients can call public methods
             return Uploader.this;
+        }
+    }
+
+    class UploaderThreadByRealm extends Thread {
+        private boolean mShouldQuit;
+        private static final int SLEEP_MIN_TIME = 5 * 1000;
+        private static final int SLEEP_MAX_TIME = 1 * 60 * 60 * 1000;
+        private int mSleepTime;
+
+        UploaderThreadByRealm () {
+            mSleepTime = SLEEP_MIN_TIME;
+        }
+
+        public void quit(){
+            mShouldQuit = true;
+        }
+
+        @Override
+        public synchronized void start() {
+            super.start();
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            while (!mShouldQuit) {
+                Realm realm = Realm.getInstance(App.sRealmConfig);
+                realm.refresh();
+                final  RealmResults<Realm_PMS50003> result = realm.where(Realm_PMS50003.class)
+                        .equalTo("hasUploaded", false)
+                        .findAll();
+                Log.d(TAG, "has " + result.size() + " un uploaded realm object.");
+
+                int c = 50;
+                if (result.size() < c){
+                    c = result.size();
+                }
+
+                if (c != 0) {
+                    mSleepTime = SLEEP_MIN_TIME;
+
+                    final int COUNT = c;
+                    final List<BmobObject> pms = new ArrayList<>();
+                    for (int i = 0; i < COUNT; i++) {
+                        pms.add(PMS50003.fromRealm(result.get(i)));
+                    }
+                    new BmobObject().insertBatch(mApp, pms, new SaveListener() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d(TAG, "upload batch success. ");
+                            Realm realm = Realm.getInstance(App.sRealmConfig);
+                            realm.refresh();
+                            realm.beginTransaction();
+                            for (int i = 0; i < COUNT; i++) {
+                                RealmResults<Realm_PMS50003> result = realm.where(Realm_PMS50003.class)
+                                        .equalTo("recordedTime", ((PMS50003) pms.get(i)).recordedTime)
+                                        .findAll();
+                                if (result.size() > 0) {
+                                    result.remove(0);
+                                } else {
+                                    Log.w(TAG, "no such pm with recordedTime=" + ((PMS50003) pms.get(i)).recordedTime);
+                                }
+                            }
+                            realm.commitTransaction();
+                        }
+
+                        @Override
+                        public void onFailure(int i, String s) {
+                            Log.d(TAG, "upload batch failed. s:" + s);
+                        }
+                    });
+                } else {
+                    mSleepTime = Math.min(Math.max(SLEEP_MIN_TIME, 2 * mSleepTime), SLEEP_MAX_TIME);
+                }
+                try {
+                    Log.d(TAG, "sleep: " + mSleepTime);
+                    sleep(mSleepTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
     }
 
