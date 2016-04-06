@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="pm 2.5 value"
+            android:text="Nan"
             android:id="@+id/pm25"
             android:textSize="80sp"
             android:focusable="true"
@@ -34,26 +34,27 @@
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <android.support.v4.widget.Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.23">
+        android:layout_height="24dp" />
+    <include layout="@layout/pm_value" />
+    <include layout="@layout/pm_value" />
+    <include layout="@layout/pm_value" />
+    <include layout="@layout/pm_value" />
+    <include layout="@layout/pm_value" />
+    <include layout="@layout/pm_value" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text=".3:"
-            android:gravity="right"
-            android:id="@+id/textView" />
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="24dp" />
+    <include layout="@layout/pm_value" />
+    <include layout="@layout/pm_value" />
+    <include layout="@layout/pm_value" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:text=".3 value"
-            android:id="@+id/pm_value_0_3" />
-    </LinearLayout>
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="24dp" />
+    <include layout="@layout/pm_value" />
+    <include layout="@layout/pm_value" />
+    <include layout="@layout/pm_value" />
 </LinearLayout>

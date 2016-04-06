@@ -235,9 +235,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Bind(R.id.pm25) TextView mPm25V;
         @Bind(R.id.update_time) TextView mUpdateTimeV;
-        @Bind(R.id.pm_value_0_3) TextView mPm03ValueV;
         private Handler mHandler;
-
 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -264,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
             super.onViewCreated(view, savedInstanceState);
         }
 
-
         @Override
         public void onResume() {
             super.onResume();
@@ -288,16 +285,37 @@ public class MainActivity extends AppCompatActivity {
                 public void onSuccess(List<PMS50003> list) {
                     PMS50003 pm = list.get(0);
                     if (null != pm) {
-                        mPm25V.setText(pm.pm2_5 + "");
                         CharSequence text =
                                 DateUtils.getRelativeTimeSpanString(pm.recordedTime,
                                         System.currentTimeMillis(),
                                         0,
                                         DateUtils.FORMAT_NUMERIC_DATE);
                         mUpdateTimeV.setText(text);
+                        mPm25V.setText(pm.pm2_5 + "");
 
-                        mPm03ValueV.setText(pm.value_0_3 + "");
+                        ArrayList<View> views = new ArrayList<View>();
+                        getView().findViewsWithText(views, "vaules", View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION);
+                        initValue(views.get(0), " 0.3: ", pm.value_0_3);
+                        initValue(views.get(1), " 0.5: ", pm.value_0_5);
+                        initValue(views.get(2), " 1.0: ", pm.value_1);
+                        initValue(views.get(3), " 2.5: ", pm.value_2_5);
+                        initValue(views.get(4), " 5.0: ", pm.value_5);
+                        initValue(views.get(5), "10.0: ", pm.value_10);
+
+
+                        initValue(views.get(6), " pm1.0: ", pm.pm1_0);
+                        initValue(views.get(7), " pm2.5: ", pm.pm2_5);
+                        initValue(views.get(8), " pm10 : ", pm.pm10);
+
+                        initValue(views.get(9), " pm1.0(CF): ", pm.pm1_0_CF1);
+                        initValue(views.get(10)," pm2.5(CF): ", pm.pm2_5_CF1);
+                        initValue(views.get(11)," pm10(CF) : ", pm.pm10_CF1);
                     }
+                }
+
+                private void initValue(View view, String title, int value) {
+                    ((TextView)((ViewGroup)view).getChildAt(0)).setText(title);
+                    ((TextView)((ViewGroup)view).getChildAt(1)).setText(value + "");
                 }
 
                 @Override

@@ -61,7 +61,7 @@ public class UploadService extends Service {
     void parseIntent(Intent intent) {
         String mac = intent.getStringExtra(BtDeviceActivity.EXTRA_MAC);
         if (!TextUtils.isEmpty(mac)) {
-//            startService(mac);
+            startService(mac);
         }
     }
 

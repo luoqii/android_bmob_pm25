@@ -2,6 +2,8 @@ package org.bbs.android.bmob.pm25;
 
 import android.app.Application;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import cn.bmob.v3.Bmob;
 import io.realm.RealmConfiguration;
 
@@ -19,5 +21,7 @@ public class App extends Application {
         Bmob.initialize(this, "5543fd2c5165876ee945a6e2dae71718");
 
         RealmConfiguration config = new RealmConfiguration.Builder(this).build();
+
+        LeakCanary.install(this);
     }
 }
