@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.bbs.android.pm25.library.AppBaseActivity;
 import org.bbs.android.pm25.library.PMS50003;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppBaseActivity {
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.

@@ -1,4 +1,4 @@
-package org.bbs.android.bmob.pm25.backend;
+package org.bbs.android.pm25.library;
 
 import android.support.v7.app.AppCompatActivity;
 
@@ -8,8 +8,6 @@ import com.umeng.analytics.MobclickAgent;
  * Created by luoqii on 16-3-31.
  */
 public class AppBaseActivity extends AppCompatActivity {
-
-
 
     @Override
     protected void onResume() {

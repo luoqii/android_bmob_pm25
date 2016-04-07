@@ -25,4 +25,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
 
     compile 'cn.bmob.android:bmob-sdk:3.4.5'
+
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }

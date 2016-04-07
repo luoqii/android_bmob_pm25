@@ -73,12 +73,12 @@ public class PmCollector {
         // we must create an NEW pm for bmob.
         lastPm = new PMS50003();
         lastPm.pm1_0_CF1 = getData(4);
-        lastPm.pm2_5_CF1= getData(6);
-        lastPm.pm10_CF1 = getData(8);
+        lastPm.pm2_5_CF1 = getData(6);
+        lastPm.pm10_CF1  = getData(8);
 
         lastPm.pm1_0     = getData(10);
-        lastPm.pm2_5    = getData(12);
-        lastPm.pm10     = getData(14);
+        lastPm.pm2_5     = getData(12);
+        lastPm.pm10      = getData(14);
 
         lastPm.value_0_3 = getData(16);
         lastPm.value_0_5 = getData(18);
