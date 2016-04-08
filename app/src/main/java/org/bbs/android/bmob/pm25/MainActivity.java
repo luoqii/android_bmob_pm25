@@ -173,7 +173,9 @@ public class MainActivity extends AppBaseActivity {
             query.findObjects(getActivity(), new FindListener<PMS50003>() {
                 @Override
                 public void onSuccess(List<PMS50003> datas) {
-                    mData.addAll(datas);
+                    for (int i = datas.size() - 1 ; i > 0  ; i --) {
+                        mData.add(datas.get(i));
+                    }
                     final int L = mData.size();
                     toast("查询成功：共" + datas.size() + "条数据。");
 
@@ -191,10 +193,10 @@ public class MainActivity extends AppBaseActivity {
                         valsPm10.add(e);
                     }
                     LineDataSet setPm10 = new LineDataSet(valsPm10,  PM_1_0);
+
                     // use the interface ILineDataSet
                     ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
                     dataSets.add(setPm25);
-
                     dataSets.add(setPm10);
 
                     ArrayList<String> xVals = new ArrayList<String>();
