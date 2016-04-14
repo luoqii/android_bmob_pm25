@@ -27,4 +27,7 @@ dependencies {
     compile 'cn.bmob.android:bmob-sdk:3.4.5'
 
     compile 'com.umeng.analytics:analytics:latest.integration'
+
+    //avoscloud-sdk 为 LeanCloud基础包
+    compile ('cn.leancloud.android:avoscloud-sdk:v3.+')
 }

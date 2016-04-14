@@ -26,7 +26,7 @@ public class PmCollectorUnitTest extends TestCase {
         mRandom = new Random();
 
         tmpPm = null;
-        mCollector.setCallback(new PmCollector.PmCallback() {
+        mCollector.addCallback(new PmCollector.PmCallback() {
             @Override
             public void onPmAvailable(PMS50003 pm) {
                 tmpPm = pm;
@@ -95,7 +95,7 @@ public class PmCollectorUnitTest extends TestCase {
             bBuffer.put(b);
         }
 
-        PMS50003 pm = mCollector.getLastPm();
+        PMS50003 pm = mCollector.getmLastPm();
         assertTrue("has not a pm with data:" + bufferString(bBuffer), tmpPm != null);
     }
 

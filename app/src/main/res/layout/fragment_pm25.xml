@@ -36,7 +36,7 @@
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
-        android:layout_height="24dp" />
+        android:layout_height="8dp" />
     <include layout="@layout/pm_value" />
     <include layout="@layout/pm_value" />
     <include layout="@layout/pm_value" />
@@ -46,14 +46,14 @@
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
-        android:layout_height="24dp" />
+        android:layout_height="8dp" />
     <include layout="@layout/pm_value" />
     <include layout="@layout/pm_value" />
     <include layout="@layout/pm_value" />
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
-        android:layout_height="24dp" />
+        android:layout_height="8dp" />
     <include layout="@layout/pm_value" />
     <include layout="@layout/pm_value" />
     <include layout="@layout/pm_value" />

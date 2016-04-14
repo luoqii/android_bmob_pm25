@@ -7,7 +7,6 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -36,7 +35,7 @@ public class Uploader{
     private static Uploader sInstance;
 
     private final Application mApp;
-    private final PmCollector.PmCallback mSender;
+    private final PmCollector mCollector;
     private BtThread mThread;
 
     private AtomicInteger mTotalAckPm;
@@ -46,7 +45,6 @@ public class Uploader{
     private Handler mUiHandler;
 
     private String mStatus = "init ...";
-    private UploaderThreadByRealm mUploaderThread;
 
     public static Uploader getInstance(Application app){
         if (null == sInstance){
@@ -63,49 +61,11 @@ public class Uploader{
         mTotalAckPm = new AtomicInteger();
         mTotalPm = new AtomicInteger();
         mUiHandler = new Handler();
-        mSender = new PmCollector.PmCallback() {
-            @Override
-            public void onPmAvailable(final PMS50003 pm) {
-//                    mTotalPm.set(mTotalPm.get());
-                mUiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mTotalPm.set(mTotalPm.get() + 1);
-                        mTotal++;
-                        Log.d(TAG, "upload:" + mTotal + " success:" + mTotalAck + "\npm:" + pm);
-                    }
-                });
 
-                pm.save(mApp, new SaveListener() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d(TAG, "onSuccess");
-//                            mTotalAckPm.set(mTotalAckPm.get());
-                        mUiHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mTotalAckPm.set(mTotalAckPm.get() + 1);
-                                mTotalAck++;
-                                mStatus = pm.pm2_5+ "";
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(int i, String s) {
-                        mStatus = "upload error";
-                        Log.w(TAG, "onFailure. i:" + i + " s:" + s);
-
-                        Realm realm = Realm.getInstance(App.sRealmConfig);
-                        realm.beginTransaction();
-                        realm.copyToRealm(Realm_PMS50003.fromPm(pm));
-
-                        realm.commitTransaction();
-                        Log.w(TAG, "save by ream. pm:" + pm);
-                    }
-                });
-            }
-        };
+        mCollector = PmCollector.getInstance();
+        mCollector.addCallback(new BmobSaver(mApp));
+        mCollector.addCallback(new AVSaver());
+        mCollector.addCallback(new YeelinkSaver());
     }
 
     void parseIntent(Intent intent) {
@@ -126,16 +86,12 @@ public class Uploader{
             mThread = null;
         }
         if (null == mThread) {
-            mThread = new BtThread(mac, mSender);
+            mThread = new BtThread(mac, mCollector);
             mThread.start();
 
             mStatus = "start thread.";
         }
 
-        if (mUploaderThread == null){
-            mUploaderThread = new UploaderThreadByRealm();
-            mUploaderThread.start();
-        }
     }
 
     public void stopSerivce() {
@@ -146,10 +102,6 @@ public class Uploader{
             mThread = null;
 
 //            stopForeground(true);
-        }
-
-        if (null != mUploaderThread){
-            mUploaderThread.quit();
         }
     }
 
@@ -169,99 +121,15 @@ public class Uploader{
         }
     }
 
-    class UploaderThreadByRealm extends Thread {
-        private boolean mShouldQuit;
-        private static final int SLEEP_MIN_TIME = 5 * 1000;
-        private static final int SLEEP_MAX_TIME = 1 * 60 * 60 * 1000;
-        private int mSleepTime;
-
-        UploaderThreadByRealm () {
-            mSleepTime = SLEEP_MIN_TIME;
-        }
-
-        public void quit(){
-            mShouldQuit = true;
-        }
-
-        @Override
-        public synchronized void start() {
-            super.start();
-        }
-
-        @Override
-        public void run() {
-            super.run();
-            while (!mShouldQuit) {
-                Realm realm = Realm.getInstance(App.sRealmConfig);
-                realm.refresh();
-                final  RealmResults<Realm_PMS50003> result = realm.where(Realm_PMS50003.class)
-                        .equalTo("hasUploaded", false)
-                        .findAll();
-                Log.d(TAG, "has " + result.size() + " un uploaded realm object.");
-
-                int c = 50;
-                if (result.size() < c){
-                    c = result.size();
-                }
-
-                if (c != 0) {
-                    mSleepTime = SLEEP_MIN_TIME;
-
-                    final int COUNT = c;
-                    final List<BmobObject> pms = new ArrayList<>();
-                    for (int i = 0; i < COUNT; i++) {
-                        pms.add(PMS50003.fromRealm(result.get(i)));
-                    }
-                    new BmobObject().insertBatch(mApp, pms, new SaveListener() {
-                        @Override
-                        public void onSuccess() {
-                            Log.d(TAG, "upload batch success. ");
-                            Realm realm = Realm.getInstance(App.sRealmConfig);
-                            realm.refresh();
-                            realm.beginTransaction();
-                            for (int i = 0; i < COUNT; i++) {
-                                RealmResults<Realm_PMS50003> result = realm.where(Realm_PMS50003.class)
-                                        .equalTo("recordedTime", ((PMS50003) pms.get(i)).recordedTime)
-                                        .findAll();
-                                if (result.size() > 0) {
-                                    result.remove(0);
-                                } else {
-                                    Log.w(TAG, "no such pm with recordedTime=" + ((PMS50003) pms.get(i)).recordedTime);
-                                }
-                            }
-                            realm.commitTransaction();
-                        }
-
-                        @Override
-                        public void onFailure(int i, String s) {
-                            Log.d(TAG, "upload batch failed. s:" + s);
-                        }
-                    });
-                } else {
-                    mSleepTime = Math.min(Math.max(SLEEP_MIN_TIME, 2 * mSleepTime), SLEEP_MAX_TIME);
-                }
-                try {
-                    Log.d(TAG, "sleep: " + mSleepTime);
-                    sleep(mSleepTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
-    }
-
     class BtThread extends  ConnectThread {
 
         private final PmCollector mCollector;
         private InputStream mIn;
         private boolean mShouldQuit;
 
-        public BtThread(String mac, PmCollector.PmCallback callback) {
+        public BtThread(String mac, PmCollector collector) {
             super(mac);
-
-            mCollector = PmCollector.getInstance();
-            mCollector.setCallback(callback);
+            mCollector = collector;
         }
 
         @Override
@@ -319,7 +187,6 @@ public class Uploader{
             return mTotalAck + "/" + mTotal;
         }
     }
-
 
     //http://developer.android.com/intl/zh-tw/guide/topics/connectivity/bluetooth.html#ConnectingDevices
     public static class ConnectThread extends Thread {

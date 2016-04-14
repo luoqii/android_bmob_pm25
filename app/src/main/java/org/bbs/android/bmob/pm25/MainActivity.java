@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,12 +29,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import org.bbs.android.pm25.library.AppBaseActivity;
 import org.bbs.android.pm25.library.PMS50003;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 
@@ -88,6 +92,7 @@ public class MainActivity extends AppBaseActivity {
         public static final String PM_1_0 = "pm 1.0";
         public static final String PM_0_3 = "pm 0.3";
         public static final String VALUE_0_3 = "value 0.3";
+        private static final String TAG = LineCharFragment.class.getSimpleName();
         private LineChart mChart;
         List<PMS50003> mData;
 
@@ -167,7 +172,7 @@ public class MainActivity extends AppBaseActivity {
 
         void initData() {
             BmobQuery<PMS50003> query = new BmobQuery<PMS50003>();
-            query.setLimit(5000);
+            query.setLimit(1000);
             query.order("-recordedTime");
 
             query.findObjects(getActivity(), new FindListener<PMS50003>() {
@@ -178,6 +183,7 @@ public class MainActivity extends AppBaseActivity {
                     }
                     final int L = mData.size();
                     toast("查询成功：共" + datas.size() + "条数据。");
+                    Log.e(TAG, "查询成功：共" + datas.size() + "条数据。");
 
                     ArrayList<Entry> valsPm25 = new ArrayList<Entry>();
                     for (int i = 0; i < L; i++) {
@@ -200,18 +206,22 @@ public class MainActivity extends AppBaseActivity {
                     dataSets.add(setPm10);
 
                     ArrayList<String> xVals = new ArrayList<String>();
+                    SimpleDateFormat df = new SimpleDateFormat("MM-dd HH:mm:ss");
                     for (int i = 0; i < L; i++) {
-                        xVals.add(i + "");
+                        xVals.add(df.format(new Date(mData.get(i).recordedTime)));
                     }
                     LineData data = new LineData(xVals, dataSets);
                     mChart.setData(data);
                     mChart.invalidate();
+
+//                    BmobObject.
                 }
 
                 @Override
                 public void onError(int code, String msg) {
                     // TODO Auto-generated method stub
                     toast("查询失败：" + msg);
+                    Log.e(TAG, "查询失败：" + msg);
                 }
             });
         }
@@ -256,7 +266,7 @@ public class MainActivity extends AppBaseActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_pm25, null);
-            ButterKnife.bind(this,v);
+            ButterKnife.bind(this, v);
             return v;
         }
 
@@ -298,27 +308,31 @@ public class MainActivity extends AppBaseActivity {
 
                         ArrayList<View> views = new ArrayList<View>();
                         getView().findViewsWithText(views, "vaules", View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION);
-                        initValue(views.get(0), " 0.3: ", pm.value_0_3);
-                        initValue(views.get(1), " 0.5: ", pm.value_0_5);
-                        initValue(views.get(2), " 1.0: ", pm.value_1);
-                        initValue(views.get(3), " 2.5: ", pm.value_2_5);
-                        initValue(views.get(4), " 5.0: ", pm.value_5);
-                        initValue(views.get(5), "10.0: ", pm.value_10);
-
+                        initValue(views.get(0), " 0.3: ", pm.value_0_3 + "μg/m³");
+                        initValue(views.get(1), " 0.5: ", pm.value_0_5 + "μg/m³");
+                        initValue(views.get(2), " 1.0: ", pm.value_1 + "μg/m³");
+                        initValue(views.get(3), " 2.5: ", pm.value_2_5 + "μg/m³");
+                        initValue(views.get(4), " 5.0: ", pm.value_5 + "μg/m³");
+                        initValue(views.get(5), "10.0: ", pm.value_10 + "μg/m³");
 
                         initValue(views.get(6), " pm1.0: ", pm.pm1_0);
                         initValue(views.get(7), " pm2.5: ", pm.pm2_5);
-                        initValue(views.get(8), " pm10 : ", pm.pm10);
+                        initValue(views.get(8), "  pm10: ", pm.pm10);
 
-                        initValue(views.get(9), " pm1.0(CF): ", pm.pm1_0_CF1);
-                        initValue(views.get(10)," pm2.5(CF): ", pm.pm2_5_CF1);
-                        initValue(views.get(11)," pm10(CF) : ", pm.pm10_CF1);
+                        initValue(views.get(9), "  pm1.0(CF): ", pm.pm1_0_CF1);
+                        initValue(views.get(10), " pm2.5(CF): ", pm.pm2_5_CF1);
+                        initValue(views.get(11), "  pm10(CF): ", pm.pm10_CF1);
                     }
                 }
 
+
                 private void initValue(View view, String title, int value) {
-                    ((TextView)((ViewGroup)view).getChildAt(0)).setText(title);
-                    ((TextView)((ViewGroup)view).getChildAt(1)).setText(value + "");
+                    initValue(view, title, value + "");
+                }
+
+                private void initValue(View view, String title, String value) {
+                    ((TextView) ((ViewGroup) view).getChildAt(0)).setText(title);
+                    ((TextView) ((ViewGroup) view).getChildAt(1)).setText(value);
                 }
 
                 @Override

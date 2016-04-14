@@ -46,31 +46,78 @@ public class PMS50003 extends BmobObject {
     public int reserve5;
     public int reserve6;
 
-    public static PMS50003 fromRealm(Realm_PMS50003 realm_pm){
-        PMS50003 pm = new PMS50003();
 
-        pm.pm1_0 = realm_pm.getPm1_0();
-        pm.pm2_5 = realm_pm.getPm2_5();
-        pm.pm10 = realm_pm.getPm10();
+    public static PMS50003 fromAv(AV_PMS50003 copy) {
+        PMS50003 copied = new PMS50003();
 
-        pm.pm1_0_CF1 = realm_pm.getPm1_0_CF1();
-        pm.pm2_5_CF1 = realm_pm.getPm2_5_CF1();
-        pm.pm10_CF1  = realm_pm.getPm10_CF1();
+        copied.pm1_0 = copy.getPm1_0();
+        copied.pm2_5 = copy.getPm2_5();
+        copied.pm10 = copy.getPm10();
 
-        pm.value_0_3 = realm_pm.getValue_0_3();
-        pm.value_0_5 = realm_pm.getValue_0_5();
-        pm.value_1   = realm_pm.getValue_1();
-        pm.value_2_5 = realm_pm.getValue_2_5();
-        pm.value_5   = realm_pm.getValue_5();
-        pm.value_10  = realm_pm.getValue_10();
+        copied.pm1_0_CF1 = copy.getPm1_0_CF1();
+        copied.pm2_5_CF1 = copy.getPm2_5_CF1();
+        copied.pm10_CF1  = copy.getPm10_CF1();
 
-        pm.recordedTime = realm_pm.getRecordedTime();
+        copied.value_0_3 = copy.getValue_0_3();
+        copied.value_0_5 = copy.getValue_0_5();
+        copied.value_1   = copy.getValue_1();
+        copied.value_2_5 = copy.getValue_2_5();
+        copied.value_5   = copy.getValue_5();
+        copied.value_10  = copy.getValue_10();
 
-        return pm;
+        copied.recordedTime = copy.getRecordedTime();
+
+        return copied;
+    }
+
+    public static PMS50003 fromRealm(Realm_PMS50003 copy){
+        PMS50003 copied = new PMS50003();
+
+        copied.pm1_0 = copy.getPm1_0();
+        copied.pm2_5 = copy.getPm2_5();
+        copied.pm10 = copy.getPm10();
+
+        copied.pm1_0_CF1 = copy.getPm1_0_CF1();
+        copied.pm2_5_CF1 = copy.getPm2_5_CF1();
+        copied.pm10_CF1  = copy.getPm10_CF1();
+
+        copied.value_0_3 = copy.getValue_0_3();
+        copied.value_0_5 = copy.getValue_0_5();
+        copied.value_1   = copy.getValue_1();
+        copied.value_2_5 = copy.getValue_2_5();
+        copied.value_5   = copy.getValue_5();
+        copied.value_10  = copy.getValue_10();
+
+        copied.recordedTime = copy.getRecordedTime();
+
+        return copied;
     };
 
-    //@Override
     public boolean sameAs(Realm_PMS50003 other) {
+        if (other == null) {
+            return false;
+        }
+
+        return (this.pm1_0 == other.getPm1_0())
+                && (this.pm2_5 == other.getPm2_5())
+                && (this.pm10 == other.getPm10())
+
+                && (this.pm1_0_CF1 == other.getPm1_0_CF1())
+                && (this.pm2_5_CF1 == other.getPm2_5_CF1())
+                && (this.pm10_CF1 == other.getPm10_CF1())
+
+                && (this.value_0_3 == other.getValue_0_3())
+                && (this.value_0_5 == other.getValue_0_5())
+                && (this.value_1 == other.getValue_1())
+                && (this.value_2_5 == other.getValue_2_5())
+                && (this.value_10 == other.getValue_10())
+
+                && (this.recordedTime == other.getRecordedTime())
+                ;
+//        return super.equals(o);
+    }
+
+    public boolean sameAs(AV_PMS50003 other) {
         if (other == null) {
             return false;
         }
@@ -103,4 +150,5 @@ public class PMS50003 extends BmobObject {
                 + "[" + recordedTime + "]"
                 ;
     }
+
 }

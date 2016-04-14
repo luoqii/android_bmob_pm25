@@ -4,6 +4,16 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
+    //https://leancloud.cn/docs/sdk_setup-android.html#Android_Studio
+    //为了解决部分第三方库重复打包了META-INF的问题
+    packagingOptions{
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    lintOptions {
+        abortOnError false
+    }
+
     defaultConfig {
         applicationId "org.bbs.android.bmob.pm25.backend"
         minSdkVersion 16
@@ -29,8 +39,12 @@ dependencies {
 
     compile 'com.umeng.analytics:analytics:latest.integration'
 
-
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+
+    //avoscloud-sdk 为 LeanCloud基础包
+    compile ('cn.leancloud.android:avoscloud-sdk:v3.+')
+
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
 }
