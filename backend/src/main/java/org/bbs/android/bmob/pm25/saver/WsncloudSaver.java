@@ -1,36 +1,35 @@
-package org.bbs.android.bmob.pm25.backend;
+package org.bbs.android.bmob.pm25.saver;
 
 import android.util.Log;
 
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.bbs.android.bmob.pm25.backend.IPmThrottler;
+import org.bbs.android.bmob.pm25.backend.PmCollector;
 import org.bbs.android.pm25.library.PMS50003;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import static com.squareup.okhttp.MediaType.parse;
 
 /**
- * Created by bysong on 16-4-12.
+ * Created by bysong on 16-4-14.
+ *
+ * http://www.wsncloud.com
  */
-public class YeelinkSaver implements PmCollector.PmCallback {
-    private static final String TAG = YeelinkSaver.class.getSimpleName();
+public class WsncloudSaver implements PmCollector.PmCallback {
+    private static final String TAG = WsncloudSaver.class.getSimpleName();
 
-    private static final String DOMAN = App.DOMAN;
-    private static final String PATH = App.PATH;
-    private static final String APK_KEY = App.APK_KEY;
-    private static final String HEADER_U_APK_KEY = "U-ApiKey";
-    private final IPmThrottler.TimeIntervalThrottler mThrottler;
+    private static final String DOMAN = "http://api.wsncloud.com";
+    private static final String PATH = "/data/v1/numerical/insert";
+    private static final String APP_KEY = "2155b71b39a381dde8ee5f8ac281d79a";
+    private static final String SENSOR_ID = "5710511de4b00415c43dd64e";
+    private IPmThrottler.TimeIntervalThrottler mThrottler;
 
-    public YeelinkSaver(){
-        //http://www.yeelink.net/develop/api#create_datapoint
+    public WsncloudSaver() {
         mThrottler = new IPmThrottler.TimeIntervalThrottler(10){
             @Override
             public void onReady(PMS50003 pm) {
@@ -47,11 +46,11 @@ public class YeelinkSaver implements PmCollector.PmCallback {
 
     private void save(PMS50003 pm) {
         OkHttpClient c = new OkHttpClient();
-        RequestBody body = RequestBody.create(parse("application/json; charset=utf-8"), toYeelinkStr(pm).getBytes());
+//        RequestBody body = RequestBody.create(parse("application/json; charset=utf-8"), toDataStr(pm).getBytes());
+        String param = "?ak="  + APP_KEY + "&id=" + SENSOR_ID + "&value=" + pm.pm2_5;
         Request r = new Request.Builder()
-                .url(DOMAN + PATH)
-                .header(HEADER_U_APK_KEY, APK_KEY)
-                .post(body)
+                .url(DOMAN + PATH + param)
+//                .post(body)
                 .build();
 
         c.newCall(r).enqueue(new Callback() {
@@ -67,11 +66,12 @@ public class YeelinkSaver implements PmCollector.PmCallback {
         });
     }
 
-    String toYeelinkStr(PMS50003 pm){
+    String toDataStr(PMS50003 pm){
         String str = "";
         DateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         str = "{" +
-                "\"timestamp\":\"" + f.format(new Date(pm.recordedTime))  + "\"," +
+                "\"ak\":\"" + APP_KEY + "\"," +
+                "\"id\":\"" + SENSOR_ID  + "\"," +
                 "\"value\":\"" + pm.pm2_5 + "\"" +
                 "}"
         ;

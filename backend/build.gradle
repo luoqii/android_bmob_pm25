@@ -47,4 +47,6 @@ dependencies {
     compile ('cn.leancloud.android:avoscloud-sdk:v3.+')
 
     compile 'com.squareup.okhttp:okhttp:2.4.0'
+
+    compile 'org.bbs.android.lib:andriodcommonlib:0.0.1'
 }

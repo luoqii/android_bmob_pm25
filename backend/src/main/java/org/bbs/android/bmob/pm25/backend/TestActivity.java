@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,10 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.SaveCallback;
-
-import org.bbs.android.pm25.library.AV_PMS50003;
+import org.bbs.android.bmob.pm25.saver.OnenetSaver;
+import org.bbs.android.bmob.pm25.saver.WsncloudSaver;
 import org.bbs.android.pm25.library.PMS50003;
 
 import java.util.ArrayList;
@@ -112,9 +109,12 @@ public class TestActivity extends ActionBarActivity {
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            mPmCollector.addCallback(new AVSaver());
-            mPmCollector.addCallback(new YeelinkSaver());
-            mPmCollector.addCallback(new BmobSaver(activity.getApplication()));
+            mPmCollector.addCallback(new WsncloudSaver());
+            mPmCollector.addCallback(new OnenetSaver());
+//            mPmCollector.addCallback(new AVSaver());
+//            mPmCollector.addCallback(new YeelinkSaver());
+//            mPmCollector.addCallback(new Lewei50Saver());
+//            mPmCollector.addCallback(new BmobSaver(activity.getApplication()));
         }
 
         @Override
