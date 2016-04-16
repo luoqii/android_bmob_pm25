@@ -48,5 +48,5 @@ dependencies {
 
     compile 'com.squareup.okhttp:okhttp:2.4.0'
 
-    compile 'org.bbs.android.lib:andriodcommonlib:0.0.1'
+    compile 'org.bbs.android.lib:library:0.0.2'
 }

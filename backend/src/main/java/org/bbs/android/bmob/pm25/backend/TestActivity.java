@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.bbs.android.bmob.pm25.saver.OnenetSaver;
+import org.bbs.android.bmob.pm25.saver.UbidotsSaver;
 import org.bbs.android.bmob.pm25.saver.WsncloudSaver;
 import org.bbs.android.pm25.library.PMS50003;
 
@@ -108,9 +109,10 @@ public class TestActivity extends ActionBarActivity {
 
         @Override
         public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            mPmCollector.addCallback(new WsncloudSaver());
-            mPmCollector.addCallback(new OnenetSaver());
+//            super.onAttach(activity);
+            mPmCollector.addCallback(new UbidotsSaver());
+//            mPmCollector.addCallback(new WsncloudSaver());
+//            mPmCollector.addCallback(new OnenetSaver());
 //            mPmCollector.addCallback(new AVSaver());
 //            mPmCollector.addCallback(new YeelinkSaver());
 //            mPmCollector.addCallback(new Lewei50Saver());
