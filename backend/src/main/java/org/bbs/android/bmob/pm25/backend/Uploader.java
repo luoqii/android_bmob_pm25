@@ -12,6 +12,11 @@ import android.util.Log;
 
 import org.bbs.android.bmob.pm25.saver.AVSaver;
 import org.bbs.android.bmob.pm25.saver.BmobSaver;
+import org.bbs.android.bmob.pm25.saver.Lewei50Saver;
+import org.bbs.android.bmob.pm25.saver.OnenetSaver;
+import org.bbs.android.bmob.pm25.saver.UbidotsRestApiSaver;
+import org.bbs.android.bmob.pm25.saver.UbidotsSaver;
+import org.bbs.android.bmob.pm25.saver.WsncloudSaver;
 import org.bbs.android.bmob.pm25.saver.YeelinkSaver;
 
 import java.io.IOException;
@@ -57,9 +62,13 @@ public class Uploader{
         mUiHandler = new Handler();
 
         mCollector = PmCollector.getInstance();
-        mCollector.addCallback(new BmobSaver(mApp));
+        mCollector.addCallback(new UbidotsRestApiSaver());
+//        mCollector.addCallback(new UbidotsSaver());
+        mCollector.addCallback(new WsncloudSaver());
+        mCollector.addCallback(new OnenetSaver());
         mCollector.addCallback(new AVSaver());
         mCollector.addCallback(new YeelinkSaver());
+        mCollector.addCallback(new Lewei50Saver());
     }
 
     void parseIntent(Intent intent) {

@@ -22,6 +22,7 @@ import static com.squareup.okhttp.MediaType.parse;
 /**
  * Created by bysong on 16-4-12.
  * http://ubidots.com/
+ * luoqii
  */
 public class UbidotsRestApiSaver implements PmCollector.PmCallback {
     private static final String TAG = UbidotsRestApiSaver.class.getSimpleName();

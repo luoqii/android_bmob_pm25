@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
  * Created by bysong on 16-4-14.
  *
  * http://www.wsncloud.com
+ * bangbang.song@gmail.com
  */
 public class WsncloudSaver implements PmCollector.PmCallback {
     private static final String TAG = WsncloudSaver.class.getSimpleName();
