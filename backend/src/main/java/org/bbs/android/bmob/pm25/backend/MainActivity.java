@@ -24,6 +24,7 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.SaveCallback;
 
+import org.bbs.android.commonlib.activity.LogcatActivity;
 import org.bbs.android.pm25.library.AppBaseActivity;
 
 import java.util.List;
@@ -62,6 +63,10 @@ public class MainActivity extends AppBaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_logcat){
+            LogcatActivity.start(this);
             return true;
         }
 

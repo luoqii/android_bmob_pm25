@@ -49,4 +49,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.4.0'
 
     compile 'org.bbs.android.lib:library:0.0.2'
+
+    compile 'com.ubidots:ubidots-java:1.6.4'
 }

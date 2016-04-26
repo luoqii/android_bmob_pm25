@@ -4,4 +4,6 @@
     tools:context="org.bbs.android.bmob.pm25.MainActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_logcat" android:title="@string/action_logcat"
+        android:orderInCategory="100" app:showAsAction="never" />
 </menu>

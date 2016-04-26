@@ -5,4 +5,5 @@
     <string name="ticker_text">upload service</string>
     <string name="notification_title">upload service is running</string>
     <string name="notification_message">upload service is running</string>
+    <string name="action_logcat">Logcat</string>
 </resources>

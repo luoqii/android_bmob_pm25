@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.bbs.android.commonlib.activity.LogcatActivity;
 import org.bbs.android.pm25.library.AppBaseActivity;
 import org.bbs.android.pm25.library.PMS50003;
 
@@ -79,6 +80,9 @@ public class MainActivity extends AppBaseActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.action_logcat){
+            LogcatActivity.start(this);
         }
 
         return super.onOptionsItemSelected(item);

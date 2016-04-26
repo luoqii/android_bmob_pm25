@@ -42,7 +42,7 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.3'
 //    compile project(':MPChartLib')
 
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+//    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile project(':library')
 
@@ -52,4 +52,6 @@ dependencies {
 
 
     compile 'com.umeng.analytics:analytics:latest.integration'
+
+    compile 'org.bbs.android.lib:library:0.0.2'
 }
