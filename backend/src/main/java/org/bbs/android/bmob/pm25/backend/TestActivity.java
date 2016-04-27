@@ -11,10 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVOSCloud;
+
+import org.bbs.android.bmob.pm25.saver.AVSaver;
+import org.bbs.android.bmob.pm25.saver.BmobSaver;
+import org.bbs.android.bmob.pm25.saver.CarriotsSaver;
+import org.bbs.android.bmob.pm25.saver.Lewei50Saver;
 import org.bbs.android.bmob.pm25.saver.OnenetSaver;
 import org.bbs.android.bmob.pm25.saver.UbidotsRestApiSaver;
 import org.bbs.android.bmob.pm25.saver.UbidotsSaver;
 import org.bbs.android.bmob.pm25.saver.WsncloudSaver;
+import org.bbs.android.bmob.pm25.saver.YeelinkSaver;
 import org.bbs.android.commonlib.activity.LogcatActivity;
 import org.bbs.android.pm25.library.PMS50003;
 
@@ -42,8 +49,12 @@ public class TestActivity extends ActionBarActivity {
         }
 
         Bmob.DEBUG = true;
-        // bangbang.s http://bmob.cn/app/browser/83253
+        // http://bmob.cn/app/secret/83253
+        // bangbang.s
         Bmob.initialize(this, "630486c87a1c6070c7679ff7be884730");
+
+        //https://leancloud.cn/data.html?appid=l9SCds6HwQ3cAY2nT0p4SkUU-gzGzoHsz#/
+        AVOSCloud.initialize(this, "l9SCds6HwQ3cAY2nT0p4SkUU-gzGzoHsz", "XzFCHOE21vAJ4mX991cneb3u");
     }
 
     @Override
@@ -100,6 +111,7 @@ public class TestActivity extends ActionBarActivity {
 
         pm.recordedTime = (System.currentTimeMillis());
 
+
         return pm;
     }
 
@@ -111,6 +123,19 @@ public class TestActivity extends ActionBarActivity {
 
         public PlaceholderFragment() {
             mPmCollector = PmCollector.getInstance();
+
+            // FIXME must do this at Activity.onCreate(), why ????
+            Bmob.DEBUG = true;
+            // http://bmob.cn/app/secret/83253
+            // bangbang.s
+            Bmob.initialize(this.getActivity(), "630486c87a1c6070c7679ff7be884730");
+
+            App.LEWEI50_PATH = "/api/V1/gateway/UpdateSensors/02";
+            //http://open.iot.10086.cn/device/detail?pid=60394&device_id=1084194
+            App.ONENET_PATH = "/devices/1084194/datapoints";
+            App.YEELINK_PATH = "/v1.0/device/347108/sensor/387404/datapoints";
+            App.WSN_CLOUD_SENSOR_ID = "5720619be4b00415c43e615b";
+            App.UBIDOTS_PATH = "/api/v1.6/variables/57206b9576254236d51d8322/values/";
         }
 
         @Override
@@ -121,8 +146,12 @@ public class TestActivity extends ActionBarActivity {
 //            mPmCollector.addCallback(new WsncloudSaver());
 //            mPmCollector.addCallback(new OnenetSaver());
 //            mPmCollector.addCallback(new AVSaver());
+//            mPmCollector.addCallback(new CarriotsSaver());
 //            mPmCollector.addCallback(new YeelinkSaver());
+
+              // FIXME can not upload new data
 //            mPmCollector.addCallback(new Lewei50Saver());
+
 //            mPmCollector.addCallback(new BmobSaver(activity.getApplication()));
         }
 
@@ -157,7 +186,9 @@ public class TestActivity extends ActionBarActivity {
         }
 
         private void scheduleStartUpload() {
-            getView().postDelayed(this, 1 * 1000);
+            if (null != getView()) {
+                getView().postDelayed(this, 1 * 1000);
+            }
         }
 
         private void doStartUpload() {

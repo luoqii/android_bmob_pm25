@@ -22,38 +22,23 @@ import static com.squareup.okhttp.MediaType.parse;
 
 /**
  * Created by bysong on 16-4-12.
+ * bb.s@gmail.com
+ * http://yeelink.net/
  */
-public class YeelinkSaver implements PmCollector.PmCallback {
+public class YeelinkSaver extends ThrottlerPmCollector {
     private static final String TAG = YeelinkSaver.class.getSimpleName();
 
-    private static final String DOMAN = App.DOMAN;
-    private static final String PATH = App.PATH;
-    private static final String APK_KEY = App.APK_KEY;
-    private static final String HEADER_U_APK_KEY = "U-ApiKey";
-    private final IPmThrottler.TimeIntervalThrottler mThrottler;
-
-    public YeelinkSaver(){
-        //http://www.yeelink.net/develop/api#create_datapoint
-        mThrottler = new IPmThrottler.TimeIntervalThrottler(10){
-            @Override
-            public void onReady(PMS50003 pm) {
-                super.onReady(pm);
-                save(pm);
-            }
-        };
+    public YeelinkSaver() {
+        // must > 10s
+        super(10);
     }
 
-    @Override
-    public void onPmAvailable(PMS50003 pm) {
-        mThrottler.newPm(pm);
-    }
-
-    private void save(PMS50003 pm) {
+    protected void save(PMS50003 pm) {
         OkHttpClient c = new OkHttpClient();
         RequestBody body = RequestBody.create(parse("application/json; charset=utf-8"), toDataStr(pm).getBytes());
         Request r = new Request.Builder()
-                .url(DOMAN + PATH)
-                .header(HEADER_U_APK_KEY, APK_KEY)
+                .url(App.YEELINK_DOMAN + App.YEELINK_PATH)
+                .header(App.YEELINK_HEADER_U_APK_KEY, App.YEELINK_APK_KEY)
                 .post(body)
                 .build();
 

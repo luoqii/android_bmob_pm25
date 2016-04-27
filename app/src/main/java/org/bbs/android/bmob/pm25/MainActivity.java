@@ -223,7 +223,6 @@ public class MainActivity extends AppBaseActivity {
 
                 @Override
                 public void onError(int code, String msg) {
-                    // TODO Auto-generated method stub
                     toast("查询失败：" + msg);
                     Log.e(TAG, "查询失败：" + msg);
                 }

@@ -11,13 +11,12 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import org.bbs.android.bmob.pm25.saver.AVSaver;
-import org.bbs.android.bmob.pm25.saver.BmobSaver;
 import org.bbs.android.bmob.pm25.saver.Lewei50Saver;
 import org.bbs.android.bmob.pm25.saver.OnenetSaver;
 import org.bbs.android.bmob.pm25.saver.UbidotsRestApiSaver;
-import org.bbs.android.bmob.pm25.saver.UbidotsSaver;
 import org.bbs.android.bmob.pm25.saver.WsncloudSaver;
 import org.bbs.android.bmob.pm25.saver.YeelinkSaver;
+import org.bbs.android.pm25.library.BaseApp;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -80,7 +79,7 @@ public class Uploader{
 
     public void startService(String mac) {
         Log.d(TAG, "startService. mac:" + mac);
-        App.sInstance.getPref().edit()
+        BaseApp.sInstance.getPref().edit()
                 .putString(App.KEY_MAC, mac)
                 .commit();
 
@@ -148,7 +147,7 @@ public class Uploader{
                     @Override
                     public void run() {
                         Log.d(TAG, "restart service.");
-                        startService(App.sInstance.getPref().getString(App.KEY_MAC, ""));
+                        startService(BaseApp.sInstance.getPref().getString(App.KEY_MAC, ""));
                     }
                 }, 5 * 1000);
             }

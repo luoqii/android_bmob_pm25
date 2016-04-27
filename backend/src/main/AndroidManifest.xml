@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.bbs.android.bmob.pm25.backend">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -35,7 +36,6 @@
         </activity>
         <activity
             android:name=".TestActivity"
-            android:process=".test"
             android:label="BackEnd Test">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

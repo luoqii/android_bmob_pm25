@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,12 +19,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.SaveCallback;
-
 import org.bbs.android.commonlib.activity.LogcatActivity;
 import org.bbs.android.pm25.library.AppBaseActivity;
+import org.bbs.android.pm25.library.BaseApp;
 
 import java.util.List;
 
@@ -156,12 +152,12 @@ public class MainActivity extends AppBaseActivity {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             ButterKnife.bind(this, rootView);
 
-            mAutoStart.setChecked(App.sInstance.getPref().getBoolean(App.PREF_AUTO_START_AT_BOOT, false));
+            mAutoStart.setChecked(BaseApp.sInstance.getPref().getBoolean(App.PREF_AUTO_START_AT_BOOT, false));
             mAutoStart.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                    App.sInstance.getPref().edit()
+                    BaseApp.sInstance.getPref().edit()
                             .putBoolean(App.PREF_AUTO_START_AT_BOOT, isChecked)
                             .commit();
                 }

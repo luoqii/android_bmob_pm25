@@ -24,39 +24,20 @@ import static com.squareup.okhttp.MediaType.parse;
  * http://ubidots.com/
  * luoqii
  */
-public class UbidotsRestApiSaver implements PmCollector.PmCallback {
+public class UbidotsRestApiSaver extends ThrottlerPmCollector {
     private static final String TAG = UbidotsRestApiSaver.class.getSimpleName();
 
-    private static final String DOMAN = "http://things.ubidots.com";
-    private static final String PATH = "/api/v1.6/variables/57189ea57625420ae1393a28/values/";
-    private static final String APK_KEY = App.APK_KEY;
-    private static final String HEADER_U_APK_KEY = "U-ApiKey";
-    private static final String TOKEN = "QWhAbRs5G1PefcjEzP5A1kVNI53sls";
-
-    private final IPmThrottler.TimeIntervalThrottler mThrottler;
-
-    public UbidotsRestApiSaver(){
-        mThrottler = new IPmThrottler.TimeIntervalThrottler(10){
-            @Override
-            public void onReady(PMS50003 pm) {
-                super.onReady(pm);
-                save(pm);
-            }
-        };
+    public UbidotsRestApiSaver() {
+        super(10);
     }
 
-    @Override
-    public void onPmAvailable(PMS50003 pm) {
-        mThrottler.newPm(pm);
-    }
-
-    private void save(PMS50003 pm) {
+    protected void save(PMS50003 pm) {
         OkHttpClient c = new OkHttpClient();
         RequestBody body = RequestBody.create(parse("application/json; charset=utf-8"), toDataStr(pm).getBytes());
-        String param = "?token=" + TOKEN;
+        String param = "?token=" + App.UBIDOTS_TOKEN;
         Request r = new Request.Builder()
-                .url(DOMAN + PATH + param)
-//                .header(HEADER_U_APK_KEY, APK_KEY)
+                .url(App.UBIDOTS_DOMAN + App.UBIDOTS_PATH + param)
+//                .header(HEADER_U_APK_KEY, YEELINK_APK_KEY)
                 .post(body)
                 .build();
 

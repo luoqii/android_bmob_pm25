@@ -21,12 +21,6 @@ import java.text.SimpleDateFormat;
 public class UbidotsSaver implements PmCollector.PmCallback {
     private static final String TAG = UbidotsSaver.class.getSimpleName();
 
-//    private static final String DOMAN = "http://things.ubidots.com";
-//    private static final String PATH = "/api/v1.6/variables/5711e45f76254237ac917c5b/values/";
-//    private static final String APK_KEY = App.APK_KEY;
-//    private static final String HEADER_U_APK_KEY = "U-ApiKey";
-//    private static final String TOKEN = "QWhAbRs5G1PefcjEzP5A1kVNI53sls";
-
     private final String API_KEY = "7dc2fd83dae0242b063abed482b2e57edc5bdc87";
     private final String VARIABLE_ID = "57189ea57625420ae1393a28";
 
@@ -54,26 +48,6 @@ public class UbidotsSaver implements PmCollector.PmCallback {
         Variable pm25 = mApiClient.getVariable(VARIABLE_ID);
 
         pm25.saveValue(pm.pm2_5);
-//        OkHttpClient c = new OkHttpClient();
-//        RequestBody body = RequestBody.create(parse("application/json; charset=utf-8"), toDataStr(pm).getBytes());
-//        String param = "?token=" + TOKEN;
-//        Request r = new Request.Builder()
-//                .url(DOMAN + PATH + param)
-////                .header(HEADER_U_APK_KEY, APK_KEY)
-//                .post(body)
-//                .build();
-//
-//        c.newCall(r).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Request request, IOException e) {
-//                Log.e(TAG, "onFailure. request:" + request + " e:" + e);
-//            }
-//
-//            @Override
-//            public void onResponse(Response response) throws IOException {
-//                Log.i(TAG, "onResponse. response:" + response);
-//            }
-//        });
     }
 
     String toDataStr(PMS50003 pm){

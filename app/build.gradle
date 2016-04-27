@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "org.bbs.android.bmob.pm25"
@@ -37,12 +37,10 @@ dependencies {
     //compile 'com.squareup.okio:okio:1.4.0'
     //bmob-sms ：Bmob单独为短信服务提供的包
     //    compile 'cn.bmob.android:bmob-sms:1.0.1'
-
     //https://github.com/luoqii/MPAndroidChart
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.3'
-//    compile project(':MPChartLib')
-
-//    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    //    compile project(':MPChartLib')
+    //    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile project(':library')
 
@@ -50,8 +48,9 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 
-
     compile 'com.umeng.analytics:analytics:latest.integration'
 
     compile 'org.bbs.android.lib:library:0.0.2'
+
+    compile 'com.google.android.gms:play-services:8.4.0'
 }

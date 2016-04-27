@@ -24,39 +24,20 @@ import static com.squareup.okhttp.MediaType.parse;
  * https://www.carriots.com
  * luoqii
  */
-public class CarriotsSaver implements PmCollector.PmCallback {
+public class CarriotsSaver extends ThrottlerPmCollector {
     private static final String TAG = CarriotsSaver.class.getSimpleName();
 
-    private static final String DOMAN = "http://api.carriots.com";
-    private static final String PATH = "/api/v1.6/variables/5711e45f76254237ac917c5b/values/";
-    private static final String APK_KEY = App.APK_KEY;
-    private static final String HEADER_U_APK_KEY = "U-ApiKey";
-    private static final String TOKEN = "QWhAbRs5G1PefcjEzP5A1kVNI53sls";
-
-    private final IPmThrottler.TimeIntervalThrottler mThrottler;
-
-    public CarriotsSaver(){
-        mThrottler = new IPmThrottler.TimeIntervalThrottler(10){
-            @Override
-            public void onReady(PMS50003 pm) {
-                super.onReady(pm);
-                save(pm);
-            }
-        };
+    public CarriotsSaver() {
+        super(10);
     }
 
-    @Override
-    public void onPmAvailable(PMS50003 pm) {
-        mThrottler.newPm(pm);
-    }
-
-    private void save(PMS50003 pm) {
+    protected void save(PMS50003 pm) {
         OkHttpClient c = new OkHttpClient();
         RequestBody body = RequestBody.create(parse("application/json; charset=utf-8"), toDataStr(pm).getBytes());
-        String param = "?token=" + TOKEN;
+        String param = "?token=" + App.CARRIOTS_TOKEN;
         Request r = new Request.Builder()
-                .url(DOMAN + PATH + param)
-//                .header(HEADER_U_APK_KEY, APK_KEY)
+                .url(App.CARRIOTS_DOMAN + App.CARRIOTS_PATH + param)
+//                .header(HEADER_U_APK_KEY, YEELINK_APK_KEY)
                 .post(body)
                 .build();
 

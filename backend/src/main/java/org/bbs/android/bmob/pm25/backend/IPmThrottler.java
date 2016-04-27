@@ -13,21 +13,24 @@ public interface IPmThrottler {
 
     public static class TimeIntervalThrottler implements  IPmThrottler {
 
+        private boolean mFirst;
         private long mLastSec;
         private int mInterval;
 
         public TimeIntervalThrottler(int intervalInSec){
             mInterval = intervalInSec;
             mLastSec = System.currentTimeMillis() / 1000;
+            mFirst = true;
         }
 
         @Override
         public void newPm(PMS50003 pm) {
             long sec = System.currentTimeMillis() / 1000;
-            if (sec - mLastSec > mInterval){
+            if (sec - mLastSec > mInterval || mFirst){
                 onReady(pm);
 
                 mLastSec = sec;
+                mFirst = false;
             }
         }
 

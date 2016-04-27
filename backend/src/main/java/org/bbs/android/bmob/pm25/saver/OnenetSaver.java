@@ -8,6 +8,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.bbs.android.bmob.pm25.backend.App;
 import org.bbs.android.bmob.pm25.backend.IPmThrottler;
 import org.bbs.android.bmob.pm25.backend.PmCollector;
 import org.bbs.android.pm25.library.PMS50003;
@@ -24,38 +25,21 @@ import static com.squareup.okhttp.MediaType.parse;
  * http://open.iot.10086.cn
  * 189-xxxx-xxxx
  */
-public class OnenetSaver implements PmCollector.PmCallback {
+public class OnenetSaver extends ThrottlerPmCollector {
     private static final String TAG = OnenetSaver.class.getSimpleName();
 
-    private static final String DOMAN = "http://api.heclouds.com";
-    private static final String PATH = "/devices/1086201/datapoints";
-    private static final String APP_KEY = " DmeFcOmio4W38ocK5uT=TN02qi4=";
-    private static final String HEADER_API_KEY = "api-key";
-    private IPmThrottler.TimeIntervalThrottler mThrottler;
-
     public OnenetSaver() {
-        mThrottler = new IPmThrottler.TimeIntervalThrottler(10){
-            @Override
-            public void onReady(PMS50003 pm) {
-                super.onReady(pm);
-                save(pm);
-            }
-        };
+        super(10);
     }
 
-    @Override
-    public void onPmAvailable(PMS50003 pm) {
-        mThrottler.newPm(pm);
-    }
-
-    private void save(PMS50003 pm) {
+    protected void save(PMS50003 pm) {
         OkHttpClient c = new OkHttpClient();
         RequestBody body = RequestBody.create(parse("application/json; charset=utf-8"), toDataStr(pm).getBytes());
         String param = "?type=3";
         Request r = new Request.Builder()
-                .url(DOMAN + PATH + param)
+                .url(App.ONENET_DOMAN + App.ONENET_PATH + param)
                 .post(body)
-                .header(HEADER_API_KEY, APP_KEY)
+                .header(App.ONENET_HEADER_API_KEY, App.ONENET_APP_KEY)
                 .build();
 
         c.newCall(r).enqueue(new Callback() {
@@ -73,7 +57,6 @@ public class OnenetSaver implements PmCollector.PmCallback {
 
     String toDataStr(PMS50003 pm){
         String str = "";
-        DateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         str = "{" +
                 "\"pm25\":\"" + pm.pm2_5 + "\"" +
                 "}"

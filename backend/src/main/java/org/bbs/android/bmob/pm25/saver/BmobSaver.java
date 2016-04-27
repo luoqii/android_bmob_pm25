@@ -20,6 +20,7 @@ import io.realm.RealmResults;
 
 /**
  * Created by bysong on 16-4-12.
+ * bb.s@gmail.com
  */
 public class BmobSaver extends Thread
         implements PmCollector.PmCallback {
@@ -123,7 +124,7 @@ public class BmobSaver extends Thread
 
     @Override
     public void onPmAvailable(final PMS50003 pm) {
-        save(pm);
+        mThrottler.newPm(pm);
     }
 
     private void save(final PMS50003 pm) {
