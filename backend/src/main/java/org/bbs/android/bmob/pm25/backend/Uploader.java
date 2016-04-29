@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import org.bbs.android.bmob.pm25.saver.AVSaver;
+import org.bbs.android.bmob.pm25.saver.BmobSaver;
 import org.bbs.android.bmob.pm25.saver.Lewei50Saver;
 import org.bbs.android.bmob.pm25.saver.OnenetSaver;
 import org.bbs.android.bmob.pm25.saver.UbidotsRestApiSaver;
@@ -68,6 +69,7 @@ public class Uploader{
         mCollector.addCallback(new AVSaver());
         mCollector.addCallback(new YeelinkSaver());
         mCollector.addCallback(new Lewei50Saver());
+        mCollector.addCallback(new BmobSaver(mApp));
     }
 
     void parseIntent(Intent intent) {

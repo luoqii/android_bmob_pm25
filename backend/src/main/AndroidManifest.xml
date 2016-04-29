@@ -36,6 +36,7 @@
         </activity>
         <activity
             android:name=".TestActivity"
+
             android:label="BackEnd Test">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

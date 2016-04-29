@@ -20,6 +20,9 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+
+        // Enabling multidex support.
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -27,15 +30,32 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+        // Define separate dev and prod product flavors.
+        dev {
+            // dev utilizes minSDKVersion = 21 to allow the Android gradle plugin
+            // to pre-dex each module and produce an APK that can be tested on
+            // Android Lollipop without time consuming dex merging processes.
+            minSdkVersion 21
+        }
+        prod {
+            // The actual minSdkVersion for the application.
+            minSdkVersion 16
+        }
+    }
 }
 
 dependencies {
+
+    compile project(':library')
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile project(':library')
 
     compile 'com.umeng.analytics:analytics:latest.integration'
 
@@ -51,4 +71,5 @@ dependencies {
     compile 'org.bbs.android.lib:library:0.0.2'
 
     compile 'com.ubidots:ubidots-java:1.6.4'
+
 }

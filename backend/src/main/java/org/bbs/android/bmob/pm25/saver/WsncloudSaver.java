@@ -7,6 +7,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.apache.http.HttpResponse;
 import org.bbs.android.bmob.pm25.backend.App;
 import org.bbs.android.bmob.pm25.backend.IPmThrottler;
 import org.bbs.android.bmob.pm25.backend.PmCollector;

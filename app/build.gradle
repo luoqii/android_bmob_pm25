@@ -29,6 +29,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
+
     //以下SDK开发者请根据需要自行选择
     //bmob-sdk ：Bmob的android sdk包
     compile 'cn.bmob.android:bmob-sdk:3.4.5'
@@ -37,6 +38,7 @@ dependencies {
     //compile 'com.squareup.okio:okio:1.4.0'
     //bmob-sms ：Bmob单独为短信服务提供的包
     //    compile 'cn.bmob.android:bmob-sms:1.0.1'
+
     //https://github.com/luoqii/MPAndroidChart
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.3'
     //    compile project(':MPChartLib')
@@ -52,5 +54,5 @@ dependencies {
 
     compile 'org.bbs.android.lib:library:0.0.2'
 
-    compile 'com.google.android.gms:play-services:8.4.0'
+//    compile 'com.google.android.gms:play-services:8.4.0'
 }

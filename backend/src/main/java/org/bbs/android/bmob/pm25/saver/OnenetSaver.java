@@ -58,7 +58,7 @@ public class OnenetSaver extends ThrottlerPmCollector {
     String toDataStr(PMS50003 pm){
         String str = "";
         str = "{" +
-                "\"pm25\":\"" + pm.pm2_5 + "\"" +
+                "\"pm2_5\":\"" + pm.pm2_5 + "\"" +
                 "}"
         ;
 

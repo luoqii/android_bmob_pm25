@@ -143,16 +143,16 @@ public class TestActivity extends ActionBarActivity {
             super.onAttach(activity);
             mPmCollector.addCallback(new UbidotsRestApiSaver());
 //            mPmCollector.addCallback(new UbidotsSaver());
-//            mPmCollector.addCallback(new WsncloudSaver());
-//            mPmCollector.addCallback(new OnenetSaver());
-//            mPmCollector.addCallback(new AVSaver());
-//            mPmCollector.addCallback(new CarriotsSaver());
-//            mPmCollector.addCallback(new YeelinkSaver());
+            mPmCollector.addCallback(new WsncloudSaver());
+            mPmCollector.addCallback(new OnenetSaver());
+            mPmCollector.addCallback(new AVSaver());
+            mPmCollector.addCallback(new CarriotsSaver());
+            mPmCollector.addCallback(new YeelinkSaver());
 
               // FIXME can not upload new data
 //            mPmCollector.addCallback(new Lewei50Saver());
 
-//            mPmCollector.addCallback(new BmobSaver(activity.getApplication()));
+            mPmCollector.addCallback(new BmobSaver(activity.getApplication()));
         }
 
         @Override
