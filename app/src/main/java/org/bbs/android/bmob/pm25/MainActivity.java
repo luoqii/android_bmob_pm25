@@ -25,7 +25,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
-import org.bbs.android.commonlib.activity.LogcatActivity;
+import org.bbs.android.log.Logcat_AppCompatActivity;
 import org.bbs.android.pm25.library.AppBaseActivity;
 import org.bbs.android.pm25.library.PMS50003;
 
@@ -74,7 +74,7 @@ public class MainActivity extends AppBaseActivity {
             return true;
         }
         if (id == R.id.action_logcat){
-            LogcatActivity.start(this);
+            Logcat_AppCompatActivity.start(this);
         }
 
         return super.onOptionsItemSelected(item);

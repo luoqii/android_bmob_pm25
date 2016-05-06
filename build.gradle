@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0'
+        classpath 'com.android.tools.build:gradle:2.1.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -31,6 +31,8 @@ allprojects {
         maven {
             url "http://mvn.leancloud.cn/nexus/content/repositories/releases"
         }
+
+        maven { url "http://dl.bintray.com/luoqii/maven" }
     }
 }
 
@@ -40,5 +42,5 @@ task clean(type: Delete) {
 
 ext {
     compileSdkVersion = 23
-    buildToolsVersion = "23.0.2"
+    buildToolsVersion = '23.0.3'
 }

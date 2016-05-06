@@ -32,7 +32,7 @@ public class BaseApp extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
 
-        MultiDex.install(this);
+//        MultiDex.install(this);
     }
 
     public SharedPreferences getPref(){

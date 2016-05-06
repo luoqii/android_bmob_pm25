@@ -22,7 +22,7 @@ import org.bbs.android.bmob.pm25.saver.UbidotsRestApiSaver;
 import org.bbs.android.bmob.pm25.saver.UbidotsSaver;
 import org.bbs.android.bmob.pm25.saver.WsncloudSaver;
 import org.bbs.android.bmob.pm25.saver.YeelinkSaver;
-import org.bbs.android.commonlib.activity.LogcatActivity;
+import org.bbs.android.log.Logcat_AppCompatActivity;
 import org.bbs.android.pm25.library.PMS50003;
 
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class TestActivity extends ActionBarActivity {
             return true;
         }
         if (id == R.id.action_logcat){
-            LogcatActivity.start(this);
+            Logcat_AppCompatActivity.start(this);
             return true;
         }
 

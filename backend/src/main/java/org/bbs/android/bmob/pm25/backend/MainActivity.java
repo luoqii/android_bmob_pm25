@@ -19,7 +19,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import org.bbs.android.commonlib.activity.LogcatActivity;
+import org.bbs.android.log.Logcat_AppCompatActivity;
 import org.bbs.android.pm25.library.AppBaseActivity;
 import org.bbs.android.pm25.library.BaseApp;
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppBaseActivity {
             return true;
         }
         if (id == R.id.action_logcat){
-            LogcatActivity.start(this);
+            Logcat_AppCompatActivity.start(this);
             return true;
         }
 

@@ -14,12 +14,17 @@ import org.bbs.android.pm25.library.PMS50003;
  * https://leancloud.cn/
  * github bangbang.s
  */
-public class AVSaver implements PmCollector.PmCallback {
-    private static final String TAG = AVSaver.class.getSimpleName();
-    private SaveCallback mCallback = new AV_SaveCallback();
+public class AVSaver extends ThrottlerPmCollector {
+    private static final String TAG = OnenetSaver.class.getSimpleName();
+    private SaveCallback mCallback;
+
+    public AVSaver() {
+        super(10);
+        mCallback = new AV_SaveCallback();
+    }
 
     @Override
-    public void onPmAvailable(PMS50003 pm) {
+    protected void save(PMS50003 pm) {
         AV_PMS50003 avPm = AV_PMS50003.fromPm(pm);
         avPm.saveInBackground(mCallback);
     }

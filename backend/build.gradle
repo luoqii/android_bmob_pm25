@@ -22,7 +22,7 @@ android {
         versionName "1.0"
 
         // Enabling multidex support.
-        multiDexEnabled true
+//        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -68,7 +68,8 @@ dependencies {
 
     compile 'com.squareup.okhttp:okhttp:2.4.0'
 
-    compile 'org.bbs.android.lib:library:0.0.2'
+//    compile 'org.bbs.android.lib:library:0.0.2'
+    compile 'org.bbs.android:log:0.2'
 
     compile 'com.ubidots:ubidots-java:1.6.4'
 

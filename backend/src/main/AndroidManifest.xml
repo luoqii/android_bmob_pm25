@@ -34,7 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
+<!--        <activity
             android:name=".TestActivity"
 
             android:label="BackEnd Test">
@@ -43,7 +43,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
         <activity android:name=".BtDeviceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
